@@ -1,15 +1,11 @@
 package hello;
 
-import java.io.IOException;
-
 import com.amazonaws.services.lambda.runtime.Context;
-import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.amazonaws.services.lambda.runtime.LambdaLogger;
+import com.amazonaws.services.lambda.runtime.RequestHandler;
 
 public class Handler implements RequestHandler<Request, Response> {
-
-	@Override
-	public Response handleRequest(Request input, Context context) {
+  public Response handleRequest(Request input, Context context) {
         LambdaLogger logger = context.getLogger();
         logger.log("*** Request handling function body entered. " + input.toString());
 				logger.log("Added new kinds of functionality here");
