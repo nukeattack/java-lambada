@@ -1,11 +1,11 @@
-package hello;
+package com.epm.lambda.entity;
 
 public class Response {
 
 	private String message;
-	private Request request;
+	private SNSMessage request;
 
-	public Response(String message, Request request) {
+	public Response(String message, SNSMessage request) {
 		this.message = message;
 		this.request = request;
 	}
@@ -17,7 +17,7 @@ public class Response {
 		return this.message;
 	}
 
-	public Request getRequest() {
+	public SNSMessage getRequest() {
 		return this.request;
 	}
 
@@ -25,7 +25,7 @@ public class Response {
 		this.message = message;
 	}
 
-	public void setRequest(Request request) {
+	public void setRequest(SNSMessage request) {
 		this.request = request;
 	}
 

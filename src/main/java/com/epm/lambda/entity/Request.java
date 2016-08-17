@@ -1,4 +1,4 @@
-package hello;
+package com.epm.lambda.entity;
 
 public class Request {
 

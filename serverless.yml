@@ -32,7 +32,7 @@ package:
 
 functions:
   hello:
-    handler: hello.Handler
+    handler: com.epm.lambda.handler.Handler
     events:
       - http:
         path: sayhello
