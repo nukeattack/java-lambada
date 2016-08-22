@@ -14,7 +14,7 @@ import com.amazonaws.services.dynamodbv2.model.ScalarAttributeType;
 
 public class CreateSensorTable {
   public static void main(String[] args) {
-    AmazonDynamoDBClient dynamoClient = new AmazonDynamoDBClient().withRegion(Regions.US_WEST_2);
+    AmazonDynamoDBClient dynamoClient = new AmazonDynamoDBClient().withEndpoint("http://localhost:8000");
     DynamoDB dynamo = new DynamoDB(dynamoClient);
 
     String tableName = "sensorevents";

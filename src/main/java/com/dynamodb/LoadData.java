@@ -2,7 +2,8 @@ package com.dynamodb;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Iterator;import com.amazonaws.regions.Region;
+import java.util.Iterator;
+
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
 import com.amazonaws.services.dynamodbv2.document.DynamoDB;
