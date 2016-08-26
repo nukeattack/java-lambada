@@ -2,8 +2,6 @@ package com.dynamodb;
 
 import java.util.Arrays;
 
-import com.amazonaws.regions.Region;
-import com.amazonaws.regions.Regions;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
 import com.amazonaws.services.dynamodbv2.document.DynamoDB;
 import com.amazonaws.services.dynamodbv2.model.AttributeDefinition;
@@ -15,7 +13,7 @@ import com.amazonaws.services.dynamodbv2.model.Projection;
 import com.amazonaws.services.dynamodbv2.model.ProvisionedThroughput;
 import com.amazonaws.services.dynamodbv2.model.ScalarAttributeType;
 
-public class CreateRealSchema {
+public class CreateRealSchemaMultiple {
   public static void main(String[] args) {
     AmazonDynamoDBClient dynamoClient = new AmazonDynamoDBClient().withEndpoint("http://localhost:8000");
 //    AmazonDynamoDBClient dynamoClient = new AmazonDynamoDBClient().withRegion(Region.getRegion(Regions.US_WEST_2));

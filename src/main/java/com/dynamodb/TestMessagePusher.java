@@ -1,5 +1,7 @@
 package com.dynamodb;
 
+import java.util.Collection;
+import java.util.LinkedList;
 import java.util.UUID;
 
 import com.amazonaws.regions.Region;
@@ -19,17 +21,18 @@ public class TestMessagePusher {
       DataEvent de = generateDataEvent(100);
       ObjectMapper mapper = new ObjectMapper();
       String json = mapper.writeValueAsString(de);
-      sqs.sendMessage(new SendMessageRequest("https://sqs.us-west-2.amazonaws.com/261625240164/projection_test", json));
+      sqs.sendMessage(new SendMessageRequest("https://sqs.us-west-2.amazonaws.com/451578979479/data-projection-single-param-queue-stas", json));
     }catch(Exception e){
       e.printStackTrace();
     }
   }
   
   private static DataEvent generateDataEvent(int size){
-    DataEvent de = new DataEvent("ods");
+    Collection<WeatherObservation> obs = new LinkedList<WeatherObservation>();
     for(int i = 0; i < size; i++){
-      de.addObservations(generateWeatherObservation());
+      obs.add(generateWeatherObservation());
     }
+    DataEvent de = new DataEvent("ods", "tag", obs);
     return de;
   }
   
@@ -41,14 +44,14 @@ public class TestMessagePusher {
     result.setEventId(UUID.randomUUID());
     result.setLatitude((float)Math.random());
     result.setLongitude((float)Math.random());
-    result.setPrecipitationAmountInMillimeterFor24Hours((int)(100*Math.random()));
-    result.setPrecipitationAmountInMillimeterForPastHour((int)(100*Math.random()));
+    result.setPrecipitationAmountInMillimeterFor24Hours((100f));
+    result.setPrecipitationAmountInMillimeterForPastHour(200f);
     result.setPresentWeatherCode(UUID.randomUUID().toString());
     result.setPressureAtSeaLevelInHectoPascal((float)Math.random());
     result.setPressureChangeInHectoPascalForPast3Hours((float)Math.random());
     result.setPressureTendencyCodeForPast3Hours((byte)0);
-    result.setRelativeHumidityInPercent(0L);
-    result.setSunshineDurationInHoursForPast24Hours(0);
+    result.setRelativeHumidityInPercent100Based(100);
+    result.setSunshineDurationInHoursForPast24Hours(223.0f);
     result.setTemperatureMaxInCelcius(33.6f);
     result.setTemperatureMinInCelcius(0.2f);
     result.setTimeZoneName("das");
