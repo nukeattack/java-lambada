@@ -41,7 +41,7 @@ public class TestMessagePusher {
     result.setAirTemperatureInCelsius((float)Math.random());
     result.setCloudCoverEffectiveInOctaNow((byte) 0);
     result.setDewPointTemperatureInCelsius((float)Math.random());
-    result.setEventId(UUID.randomUUID());
+//    result.setEventId(UUID.randomUUID());
     result.setLatitude((float)Math.random());
     result.setLongitude((float)Math.random());
     result.setPrecipitationAmountInMillimeterFor24Hours((100f));
@@ -55,7 +55,7 @@ public class TestMessagePusher {
     result.setTemperatureMaxInCelcius(33.6f);
     result.setTemperatureMinInCelcius(0.2f);
     result.setTimeZoneName("das");
-    result.setVisibilityInKilometer(0.33f);
+//    result.setVisibilityInKilometer(0.33f);
     result.setWindDirectionInDegree(2);
     result.setWindSpeedInMetersPerSecond(33.4f);
     result.setWindSpeedMaxGustInKnotsForLastHour(2.2f);
