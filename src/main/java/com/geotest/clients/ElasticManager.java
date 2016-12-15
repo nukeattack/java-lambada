@@ -9,6 +9,7 @@ import io.searchbox.client.JestResult;
 import io.searchbox.client.config.HttpClientConfig;
 import io.searchbox.core.Bulk;
 import io.searchbox.core.Index;
+import io.searchbox.core.Search;
 import io.searchbox.indices.CreateIndex;
 import io.searchbox.indices.mapping.PutMapping;
 import searchbox.BulkProcessingListener;
@@ -30,8 +31,14 @@ public class ElasticManager {
 
   private JestClient client;
   BulkProcessor bulkProcessor;
+  ElasticQueryManager queryManager;
 
   public ElasticManager() {
+    queryManager = new ElasticQueryManager();
+    try {
+      queryManager.addQueryTemplate("search_boundbox", "elastic/bound_box_query.json");
+    } catch (IOException e) {
+    }
     JestClientFactory factory = new JestClientFactory();
     factory.setHttpClientConfig(new HttpClientConfig
         .Builder("http://localhost:9200")
@@ -71,8 +78,18 @@ public class ElasticManager {
     for (int i = 0; i < POINT_COUNT; i++) {
       Buoy buoy = new Buoy(UUID.randomUUID().toString(), new Location(Math.random() * 90.0f, Math.random() * 180.0f));
       bulkProcessor.execute(new Index.Builder(buoy).index(INDEX_NAME).type(INDEX_TYPE).build());
+//      client.execute(new Index.Builder(buoy).index(INDEX_NAME).type(INDEX_TYPE).build());
     }
-    bulkProcessor.flush();
-    bulkProcessor.close();
+//    bulkProcessor.flush();
+//    bulkProcessor.close();
+  }
+
+  public void queryRect(Location maxLoc, Location minLoc) throws IOException {
+    Search search = new Search.Builder(queryManager.getQuery("search_boundbox", maxLoc.getLat(), maxLoc.getLon(), minLoc.getLat(), minLoc.getLon()))
+        .addIndex(INDEX_NAME)
+        .addType(INDEX_TYPE)
+        .build();
+
+    client.execute(search);
   }
 }

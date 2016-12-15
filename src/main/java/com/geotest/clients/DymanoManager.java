@@ -4,6 +4,8 @@ import com.amazonaws.geo.GeoDataManager;
 import com.amazonaws.geo.GeoDataManagerConfiguration;
 import com.amazonaws.geo.model.GeoPoint;
 import com.amazonaws.geo.model.PutPointRequest;
+import com.amazonaws.geo.model.QueryRectangleRequest;
+import com.amazonaws.geo.model.QueryRectangleResult;
 import com.amazonaws.geo.util.GeoTableUtil;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
@@ -11,10 +13,13 @@ import com.amazonaws.services.dynamodbv2.document.DynamoDB;
 import com.amazonaws.services.dynamodbv2.document.Table;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.amazonaws.services.dynamodbv2.model.CreateTableRequest;
+import com.amazonaws.services.dynamodbv2.model.QueryResult;
 import com.amazonaws.services.dynamodbv2.model.ResourceNotFoundException;
 import com.geotest.entities.Buoy;
 import com.geotest.entities.Location;
 
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -48,6 +53,12 @@ public class DymanoManager {
       PutPointRequest request = new PutPointRequest(geoPoint, rangeKeyValue);
       geoDataManager.putPoint(request);
     }
+  }
+
+  public List<Map<String, AttributeValue>> queryRectangle(Location minLocation, Location maxLocation){
+    QueryRectangleRequest query = new QueryRectangleRequest(new GeoPoint(minLocation.getLat(), minLocation.getLon()), new GeoPoint(maxLocation.getLat(), maxLocation.getLon()));
+    QueryRectangleResult result = geoDataManager.queryRectangle(query);
+    return result.getItem();
   }
 
   private Table createTable() {

@@ -1,4 +1,4 @@
-package com.geotest;
+package com;
 
 import com.geotest.clients.ElasticManager;
 import org.slf4j.Logger;
@@ -8,15 +8,14 @@ import java.io.IOException;
 
 /**
  */
-public class GeoTestFillDataMain {
-  private final static Logger logger = LoggerFactory.getLogger(GeoTestFillDataMain.class);
+public class ElasticTestMain {
+  private final static Logger logger = LoggerFactory.getLogger(ElasticTestMain.class);
 
   public static void main(String[] args) {
-//    DymanoManager dymanoManager = new DymanoManager();
-//    dymanoManager.fillDatabase();
     try {
       ElasticManager elasticManager = new ElasticManager();
       elasticManager.fillDatabase();
+
     } catch (IOException e) {
       logger.error("Error ", e);
       throw new RuntimeException(e);

@@ -1,0 +1,20 @@
+{
+  "query": {
+    "filtered": {
+      "filter": {
+        "geo_bounding_box": {
+          "location": {
+            "top_left": {
+              "lat":  %1$2.4f,
+              "lon": %2$2.4f
+            },
+            "bottom_right": {
+              "lat":  %3$2.4f,
+              "lon": %4$2.4f
+            }
+          }
+        }
+      }
+    }
+  }
+}
