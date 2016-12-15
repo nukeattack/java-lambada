@@ -1,0 +1,12 @@
+{
+  "buoy": {
+    "properties": {
+      "id": {
+        "type": "string"
+      },
+      "location": {
+        "type": "geo_point"
+      }
+    }
+  }
+}

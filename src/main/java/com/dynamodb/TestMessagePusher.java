@@ -1,17 +1,15 @@
 package com.dynamodb;
 
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.UUID;
-
 import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.sqs.AmazonSQS;
 import com.amazonaws.services.sqs.AmazonSQSClient;
 import com.amazonaws.services.sqs.model.SendMessageRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.meteogroup.observation.shared.DataEvent;
-import com.meteogroup.observation.shared.WeatherObservation;
+
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.UUID;
 
 public class TestMessagePusher {
   public static void main(String[] args) {
@@ -32,7 +30,7 @@ public class TestMessagePusher {
     for(int i = 0; i < size; i++){
       obs.add(generateWeatherObservation());
     }
-    DataEvent de = new DataEvent("ods", "tag", obs);
+    DataEvent de = new DataEvent();
     return de;
   }
   
@@ -58,7 +56,7 @@ public class TestMessagePusher {
 //    result.setVisibilityInKilometer(0.33f);
     result.setWindDirectionInDegree(2);
     result.setWindSpeedInMetersPerSecond(33.4f);
-    result.setWindSpeedMaxGustInKnotsForLastHour(2.2f);
+//    result.setWindSpeedMaxGustInKnotsForLastHour(2.2f);
     return result;
   }
 }
