@@ -10,9 +10,11 @@ import java.io.IOException;
  */
 public class DynamoTestMain {
   public static void main(String[] args) {
+    fill();
   }
 
-  public void fill(){
+  public static
+  void fill(){
     DymanoManager dymanoManager = new DymanoManager();
     dymanoManager.fillDatabase();
   }

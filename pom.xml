@@ -86,9 +86,25 @@
       <artifactId>slf4j-log4j12</artifactId>
       <version>1.7.22</version>
     </dependency>
+    <dependency>
+      <groupId>com.google.common.geometry</groupId>
+      <artifactId>s2-geometry-java</artifactId>
+      <version>1.0.0</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.google.common</groupId>
+      <artifactId>guava-r09</artifactId>
+      <version>1.0.0</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.amazonaws</groupId>
+      <artifactId>dynamodb-geo</artifactId>
+      <version>1.0.0</version>
+    </dependency>
   </dependencies>
   <!-- https://mvnrepository.com/artifact/io.github.benas/random-beans -->
-
 
   <build>
 

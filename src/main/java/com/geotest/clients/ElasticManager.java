@@ -27,11 +27,10 @@ import java.util.concurrent.TimeUnit;
 public class ElasticManager {
   public static final String INDEX_NAME = "geo-test";
   public static final String INDEX_TYPE = "buoy";
-  public static final int POINT_COUNT = 10000;
-
-  private JestClient client;
+  public static final int POINT_COUNT = 6312;
   BulkProcessor bulkProcessor;
   ElasticQueryManager queryManager;
+  private JestClient client;
 
   public ElasticManager() {
     queryManager = new ElasticQueryManager();
@@ -40,22 +39,39 @@ public class ElasticManager {
     } catch (IOException e) {
     }
     JestClientFactory factory = new JestClientFactory();
-    factory.setHttpClientConfig(new HttpClientConfig
-        .Builder("http://localhost:9200")
-                                    .multiThreaded(true).maxTotalConnection(20)
-                                    .build());
+    factory.setHttpClientConfig(new HttpClientConfig.Builder("http://localhost:9200").multiThreaded(true)
+                                                                                     .maxTotalConnection(20).build());
     this.client = factory.getObject();
+
+  }
+
+  public void fillDatabase() throws IOException {
     bulkProcessor = new BulkProcessor(client, new Gson(), new BulkProcessingListener() {
       @Override
       public void beforeBulk(Bulk request) {
       }
+
       @Override
       public void afterBulk(Bulk request, JestResult response) {
       }
+
       @Override
       public void afterBulk(Bulk request, Throwable failure) {
       }
-    }).withConcurrentRequests(3).addFlushByVolume(10*1024*1024).addFlushByCount(500).addFlushByPeriod(5, TimeUnit.SECONDS);
+    }).withConcurrentRequests(3).addFlushByVolume(10 * 1024 * 1024).addFlushByCount(500).addFlushByPeriod(5, TimeUnit
+        .SECONDS);
+    String indexMapping = readStream(ElasticManager.class.getClassLoader().getResourceAsStream("buoi_mapping.json"));
+    PutMapping putMapping = new PutMapping.Builder(INDEX_NAME, INDEX_TYPE, indexMapping).build();
+    client.execute(new CreateIndex.Builder(INDEX_NAME).build());
+    client.execute(putMapping);
+
+    for (int i = 0; i < POINT_COUNT; i++) {
+      Buoy buoy = new Buoy(UUID.randomUUID().toString(), new Location(Math.random() * 90.0f, Math.random() * 180.0f));
+      bulkProcessor.execute(new Index.Builder(buoy).index(INDEX_NAME).type(INDEX_TYPE).build());
+      //      client.execute(new Index.Builder(buoy).index(INDEX_NAME).type(INDEX_TYPE).build());
+    }
+    //    bulkProcessor.flush();
+    //    bulkProcessor.close();
   }
 
   private String readStream(InputStream is) throws IOException {
@@ -69,26 +85,11 @@ public class ElasticManager {
     return sb.toString();
   }
 
-  public void fillDatabase() throws IOException {
-    String indexMapping = readStream(ElasticManager.class.getClassLoader().getResourceAsStream("buoi_mapping.json"));
-    PutMapping putMapping = new PutMapping.Builder(INDEX_NAME, INDEX_TYPE, indexMapping).build();
-    client.execute(new CreateIndex.Builder(INDEX_NAME).build());
-    client.execute(putMapping);
-
-    for (int i = 0; i < POINT_COUNT; i++) {
-      Buoy buoy = new Buoy(UUID.randomUUID().toString(), new Location(Math.random() * 90.0f, Math.random() * 180.0f));
-      bulkProcessor.execute(new Index.Builder(buoy).index(INDEX_NAME).type(INDEX_TYPE).build());
-//      client.execute(new Index.Builder(buoy).index(INDEX_NAME).type(INDEX_TYPE).build());
-    }
-//    bulkProcessor.flush();
-//    bulkProcessor.close();
-  }
-
   public void queryRect(Location maxLoc, Location minLoc) throws IOException {
-    Search search = new Search.Builder(queryManager.getQuery("search_boundbox", maxLoc.getLat(), maxLoc.getLon(), minLoc.getLat(), minLoc.getLon()))
-        .addIndex(INDEX_NAME)
-        .addType(INDEX_TYPE)
-        .build();
+    Search search = new Search.Builder(queryManager.getQuery("search_boundbox", maxLoc.getLat(), maxLoc.getLon(),
+                                                             minLoc.getLat(), minLoc.getLon())).addIndex(INDEX_NAME)
+                                                                                               .addType(INDEX_TYPE)
+                                                                                               .build();
 
     client.execute(search);
   }

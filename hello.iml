@@ -13,6 +13,7 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="guava-r09" level="project" />
     <orderEntry type="library" name="s2-geometry-java" level="project" />
+    <orderEntry type="library" name="dynamodb-geo-1.0.0" level="application" />
     <orderEntry type="library" name="Maven: com.amazonaws:aws-lambda-java-core:1.1.0" level="project" />
     <orderEntry type="library" name="Maven: com.amazonaws:aws-java-sdk-s3:1.11.23" level="project" />
     <orderEntry type="library" name="Maven: com.amazonaws:aws-java-sdk-kms:1.11.23" level="project" />
@@ -49,6 +50,8 @@
     <orderEntry type="library" name="Maven: org.apache.httpcomponents:httpasyncclient:4.1.1" level="project" />
     <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.7.21" level="project" />
     <orderEntry type="library" name="Maven: org.slf4j:slf4j-log4j12:1.7.22" level="project" />
-    <orderEntry type="library" name="dynamodb-geo-1.0.0" level="application" />
+    <orderEntry type="library" name="Maven: com.google.common.geometry:s2-geometry-java:1.0.0" level="project" />
+    <orderEntry type="library" name="Maven: com.google.common:guava-r09:1.0.0" level="project" />
+    <orderEntry type="library" name="Maven: com.amazonaws:dynamodb-geo:1.0.0" level="project" />
   </component>
 </module>

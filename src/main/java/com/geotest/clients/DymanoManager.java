@@ -46,7 +46,7 @@ public class DymanoManager {
       createTable();
     }
 
-    for (int i = 0; i < 1000; i++) {
+    for (int i = 0; i < 10000; i++) {
       Buoy buoy = new Buoy(UUID.randomUUID().toString(), new Location(Math.random() * 90.0f, Math.random() * 180.0f));
       AttributeValue rangeKeyValue = new AttributeValue().withS(buoy.getId());
       GeoPoint geoPoint = new GeoPoint(buoy.getLocation().getLat(), buoy.getLocation().getLon());
