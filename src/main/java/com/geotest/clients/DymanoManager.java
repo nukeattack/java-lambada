@@ -2,10 +2,7 @@ package com.geotest.clients;
 
 import com.amazonaws.geo.GeoDataManager;
 import com.amazonaws.geo.GeoDataManagerConfiguration;
-import com.amazonaws.geo.model.GeoPoint;
-import com.amazonaws.geo.model.PutPointRequest;
-import com.amazonaws.geo.model.QueryRectangleRequest;
-import com.amazonaws.geo.model.QueryRectangleResult;
+import com.amazonaws.geo.model.*;
 import com.amazonaws.geo.util.GeoTableUtil;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
@@ -58,6 +55,11 @@ public class DymanoManager {
   public List<Map<String, AttributeValue>> queryRectangle(Location minLocation, Location maxLocation){
     QueryRectangleRequest query = new QueryRectangleRequest(new GeoPoint(minLocation.getLat(), minLocation.getLon()), new GeoPoint(maxLocation.getLat(), maxLocation.getLon()));
     QueryRectangleResult result = geoDataManager.queryRectangle(query);
+    return result.getItem();
+  }
+
+  public List<Map<String, AttributeValue>> queryRadius(Location loc, double radius){
+    QueryRadiusResult result = geoDataManager.queryRadius(new QueryRadiusRequest(new GeoPoint(loc.getLat(), loc.getLon()), radius));
     return result.getItem();
   }
 

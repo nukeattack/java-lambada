@@ -1,0 +1,15 @@
+{
+  "query": {
+    "filtered": {
+      "filter": {
+        "geo_distance": {
+          "distance": "%3$10s km",
+          "location": {
+            "lat":  %1$2.4f,
+            "lon": %2$2.4f
+          }
+        }
+      }
+    }
+  }
+}

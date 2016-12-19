@@ -36,11 +36,12 @@ public class ElasticManager {
     queryManager = new ElasticQueryManager();
     try {
       queryManager.addQueryTemplate("search_boundbox", "elastic/bound_box_query.json");
+      queryManager.addQueryTemplate("search_radius", "elastic/radius_query.json");
     } catch (IOException e) {
     }
     JestClientFactory factory = new JestClientFactory();
-    factory.setHttpClientConfig(new HttpClientConfig.Builder("http://localhost:9200").multiThreaded(true)
-                                                                                     .maxTotalConnection(20).build());
+    factory.setHttpClientConfig(new HttpClientConfig.Builder("http://search-srv-posi-esearch-dev-m3argdm4lmerf7kz46n2cru4pq.eu-west-1.es.amazonaws.com").multiThreaded(true)
+                                    .maxTotalConnection(20).build());
     this.client = factory.getObject();
 
   }
@@ -85,12 +86,24 @@ public class ElasticManager {
     return sb.toString();
   }
 
-  public void queryRect(Location maxLoc, Location minLoc) throws IOException {
-    Search search = new Search.Builder(queryManager.getQuery("search_boundbox", maxLoc.getLat(), maxLoc.getLon(),
-                                                             minLoc.getLat(), minLoc.getLon())).addIndex(INDEX_NAME)
-                                                                                               .addType(INDEX_TYPE)
-                                                                                               .build();
+  public JestResult queryRect(Location maxLoc, Location minLoc) throws IOException {
+    String query = queryManager.getQuery("search_boundbox", maxLoc.getLat(), maxLoc.getLon(),
+                                         minLoc.getLat(), minLoc.getLon());
+    System.out.println(query);
+    Search search = new Search.Builder(query).addIndex(INDEX_NAME)
+        .addType(INDEX_TYPE)
+        .build();
 
-    client.execute(search);
+    return client.execute(search);
+  }
+
+  public JestResult queryRadius(Location loc, Double radiusKm) throws IOException {
+    String query = queryManager.getQuery("search_radius", loc.getLat(), loc.getLon(), radiusKm);
+    System.out.println(query);
+    Search search = new Search.Builder(query).addIndex(INDEX_NAME)
+        .addType(INDEX_TYPE)
+        .build();
+
+    return client.execute(search);
   }
 }

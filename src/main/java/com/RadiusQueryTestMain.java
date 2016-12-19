@@ -11,37 +11,34 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-public class QueryTest {
+/**
+ */
+public class RadiusQueryTestMain {
   public static void main(String[] args) throws IOException {
-    randomQuery(1);
-  }
-  public static void randomQuery(int cnt) throws IOException {
     DymanoManager dymanoManager = new DymanoManager();
     ElasticManager elasticManager = new ElasticManager();
     List<List<Map<String, AttributeValue>>> dynamoResults = new LinkedList<>();
     List<Long> dynamoTime = new LinkedList<>();
     List<Long> elasticTime = new LinkedList<>();
-    for(int i = 0; i < cnt; i++){
-      Location[] rect = getRandomRect();
+    for(int i = 0; i < 100; i++){
       long time = System.currentTimeMillis();
-      List<Map<String, AttributeValue>>  dynamoResult = dymanoManager.queryRectangle(rect[0], rect[1]);
+      Location rect = getRandomLoc(50);
+      List<Map<String, AttributeValue>> dynamoResult = dymanoManager.queryRadius(rect, 100);
       System.out.println(dynamoResult);
       dynamoTime.add(System.currentTimeMillis() - time);
-      time = System.currentTimeMillis();
-      JestResult elasticResult = elasticManager.queryRect(rect[1], rect[0]);
-      elasticTime.add(System.currentTimeMillis() - time);
       System.out.println("Dynamo stats : " + dynamoTime);
+
+      time = System.currentTimeMillis();
+      elasticManager.queryRadius(rect, 100.0);
+      elasticTime.add(System.currentTimeMillis() - time);
       System.out.println("Elastic stats : " + elasticTime);
+      
     }
   }
 
-  public  static Location[] getRandomRect(){
-    double longitudeSize = Math.random()*20.0f;
-    double latitudeSize = Math.random()*20.0f;
-    Location minLoc = new Location(Math.random()*(90.0-latitudeSize), Math.random()*(180-longitudeSize));
-    Location maxLoc = new Location(minLoc.getLat()+latitudeSize, minLoc.getLon()+longitudeSize);
+  public static Location getRandomLoc(double radius) {
+    Location minLoc = new Location(Math.random() * (90.0 - radius), Math.random() * (180 - radius));
 
-    return new Location[]{minLoc, maxLoc};
+    return minLoc;
   }
-
 }
